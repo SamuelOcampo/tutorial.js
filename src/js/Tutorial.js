@@ -19,12 +19,17 @@ class Tutorial {
   }
 
   bindStep = () => {
-    this.step.ref.addEventListener('click', debounce(this.handleClick));
+    const { el } = this.step && this.step.refs;
+    if (el) {
+      el.addEventListener('click', debounce(this.handleClick));
+    }
   }
 
   handleClick = ({ target }) => {
     const key = target.dataset.action;
-    this[key] && this[key]();
+    if (this[key]) {
+      this[key]();
+    }
   }
 
   showStep = () => {
@@ -40,16 +45,32 @@ class Tutorial {
     };
   }
 
-  next = () => {
+  dismiss = () => {
+    this.finish();
+  }
+
+  finish = () => {
+    const { steps, activeIndex } = this.state;
+    this.step.clean();
+    delete this.step;
+    this.onChange(
+      steps[activeIndex],
+      null,
+      false,
+    );
+  }
+
+  continue = () => {
     const { steps, activeIndex } = this.state;
     const nextIndex = activeIndex + 1;
     this.setState({ activeIndex: nextIndex });
-    /*  eslint no-unused-expressions: ["error", { "allowShortCircuit": true }]  */
-    this.onChange && this.onChange(
-      steps[activeIndex],
-      steps[nextIndex],
-      this.showStep,
-    );
+    if (this.onChange) {
+      this.onChange(
+        steps[activeIndex],
+        steps[nextIndex],
+        steps[nextIndex] ? this.showStep : this.finish,
+      );
+    }
   }
 }
 

@@ -1,32 +1,76 @@
 import PopperJs from 'popper.js';
-import createStep from './utils/createStep';
+import {
+  stepContainer,
+  stepContinue,
+  stepDismiss,
+  stepText,
+  stepEl,
+  stepArrow,
+} from './utils/createDOMElements';
 import stepConf from './utils/stepConf';
+
+const render = child => parent => parent.appendChild(child);
 
 class Step {
   constructor(conf) {
-    this.ref = createStep();
+    this.refs = {};
+    this.popper = null;
     this.conf = {
       ...stepConf,
       ...conf,
     };
-    this.popper = null;
     this.render();
   }
 
   render = () => {
-    this.conf.appendTo.appendChild(this.ref);
+    const { appendTo } = this.conf;
+    const el = stepEl();
+    const container = render(stepContainer())(el);
+    this.refs = {
+      el,
+      container,
+      text: render(stepText())(container),
+      dismiss: render(stepDismiss())(container),
+      continue: render(stepContinue())(container),
+      arrow: render(stepArrow())(el),
+    };
+    render(el)(appendTo);
+  }
+
+  clean = () => {
+    this.popper.destroy();
+    this.popper = null;
+  }
+
+  updatePopper = (refence, popper, options) => {
+    if (this.popper != null) this.clean();
+    this.popper = new PopperJs(refence, popper, options);
   }
 
   append = (step) => {
-    this.changeText(step.text);
-    const options = {
-      placement: 'auto',
-    };
-    this.popper = new PopperJs(step.element, this.ref, options);
+    const { el, arrow } = this.refs;
+    this.updateTextRef('text', step.text, step.plain);
+    this.updateTextRef('dismiss', step.dismiss, step.plain);
+    this.updateTextRef('continue', step.continue, step.plain);
+
+    this.updatePopper(step.element, el, {
+      placement: step.placement || 'auto',
+      arrow: {
+        element: arrow,
+      },
+    });
   }
 
-  changeText = (text) => {
-    this.ref.text = text;
+  updateTextRef = (key, text, plain = true) => {
+    const ref = key && this.refs[key];
+    if (!text || !ref) {
+      return;
+    }
+    if (plain) {
+      ref.innerText = text;
+    } else {
+      ref.innerHTML = text;
+    }
   }
 }
 

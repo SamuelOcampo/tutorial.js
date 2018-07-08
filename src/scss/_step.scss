@@ -1,0 +1,54 @@
+.step {
+
+  position: relative;
+
+  &__container {
+    padding: 30px 20px;
+    background: $color-primary;
+    border-radius: $border-radius;
+    min-width: 200px;
+    color: #fff;
+  
+  }
+
+
+  &__continue {
+    border: none;
+    background: #fff;
+    border-radius: 5px;
+    color: $color-primary;
+    padding: 5px 20px;
+    float: right;
+  }
+
+  &__dismiss {
+    background: none;
+    border: none;
+    color: $color-secondary;
+    padding: 5px 20px;
+  }
+
+  &.hidden {
+    display: none;
+  }
+
+  &[x-placement] {
+    display: initial;
+  }
+
+  &[x-placement^="bottom"] &__arrow {
+    @include arrow(top, $color-primary, 10px);
+  }
+  
+  &[x-placement^="top"] &__arrow {
+    @include arrow(bottom, $color-primary, 10px);
+  }
+  
+  &[x-placement^="left"] &__arrow {
+    @include arrow(right, $color-primary, 10px);
+  }
+  
+  &[x-placement^="right"] &__arrow {
+    @include arrow(left, $color-primary, 10px);
+  }
+}
