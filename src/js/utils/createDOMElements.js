@@ -9,7 +9,7 @@ function createDOMElement({ className, title, type }) {
 
 function stepEl() {
   return createDOMElement({
-    className: 'step hidden',
+    className: 'step step--hidden',
     type: 'div',
   });
 }

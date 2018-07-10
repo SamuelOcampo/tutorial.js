@@ -70,6 +70,10 @@ class Tutorial {
         steps[nextIndex],
         steps[nextIndex] ? this.showStep : this.finish,
       );
+    } else if (steps[nextIndex]) {
+      this.showStep();
+    } else {
+      this.finish();
     }
   }
 }
