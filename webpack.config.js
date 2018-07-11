@@ -11,7 +11,7 @@ module.exports = {
         filename: 'tutorial.js.bundle.js'
     },
 
-    devtool: 'eval-cheap-module-source-map',
+    devtool: 'source-map',
 
     context: path.resolve(__dirname),
 

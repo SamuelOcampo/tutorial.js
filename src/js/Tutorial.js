@@ -53,11 +53,13 @@ class Tutorial {
     const { steps, activeIndex } = this.state;
     this.step.clean();
     delete this.step;
-    this.onChange(
-      steps[activeIndex],
-      null,
-      false,
-    );
+    if (this.onChange) {
+      this.onChange(
+        steps[activeIndex],
+        null,
+        false,
+      );
+    }
   }
 
   continue = () => {
