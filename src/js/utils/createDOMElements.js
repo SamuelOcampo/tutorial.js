@@ -41,7 +41,7 @@ function stepText() {
 function stepDismiss() {
   const el = createDOMElement({
     className: 'step__dismiss',
-    title: 'Hide this tips',
+    title: 'Hide these tips',
     type: 'button',
   });
   el.dataset.action = 'dismiss';
@@ -57,6 +57,13 @@ function stepArrow() {
   return el;
 }
 
+function stepMask() {
+  return createDOMElement({
+    className: 'step-mask step-mask--hidden',
+    type: 'div',
+  });
+}
+
 export {
   createDOMElement,
   stepEl,
@@ -65,4 +72,5 @@ export {
   stepText,
   stepDismiss,
   stepArrow,
+  stepMask,
 };
